@@ -24,9 +24,10 @@ namespace CharityAuction.Api.Models
         public bool BiddingActive { get => StartDate <= DateTime.Now && EndDate >= DateTime.Now; }
 
         [JsonIgnore]
+        [AdaptIgnore]
         public virtual ICollection<AuctionItem> Items { get; set; }
 
         [NotMapped]
-        public virtual int ItemCount { get => Items.Count(); }
+        public virtual int ItemCount { get => Items != null ? Items.Count() : 0; }
     }
 }

@@ -4,43 +4,41 @@ import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
 
 @Component({
-  selector: 'app-editauction',
-  templateUrl: './editauction.component.html',
-  styleUrls: ['./editauction.component.scss']
+  selector: 'app-editauctionitem',
+  templateUrl: './editauctionitem.component.html',
+  styleUrls: ['./editauctionitem.component.scss']
 })
-export class EditauctionComponent implements OnInit {
-
-  public auction : any = {};
+export class EditauctionitemComponent implements OnInit {
+  public Item : any = {};
   constructor(private apiService : ApiService, private route : ActivatedRoute, private router : Router) { 
   }
 
   ngOnInit(): void {
-    let id =  this.route.snapshot.params['id'];
-
-    if(id == 'new'){
-      this.auction = { name : "New Auction", description: "", startDate: "", endDate: "", logoImageId: null};
-    }
-    else{
-      this.apiService.GetAsync<any>("auctions/" + id ).subscribe(result =>{
-        this.auction = result;
-      });
-    }
-   
-  }
-
-  public Save(){
+    let auctionId =  this.route.snapshot.params['auctionId'];
     let id =  this.route.snapshot.params['id'];
 
     if(id == "new"){
-      this.apiService.PostAsync<any>("auctions", this.auction).subscribe(result =>{
-        this.auction = result;
-        this.router.navigateByUrl("auctions");
+      this.Item = { lotNumber : "", title: "", description: "", startPrice: 0, reservePrice: 0, imageIds: []};
+    }
+    else{
+      this.apiService.GetAsync<any>("auctions/" + auctionId + "/items/" + id ).subscribe(result =>{
+        this.Item = result;
+      });
+    }
+  }
+
+  public Save(){
+    let auctionId =  this.route.snapshot.params['auctionId'];
+    let id =  this.route.snapshot.params['id'];
+
+    if(id == "new"){
+      this.apiService.PostAsync<any>("auctions/" + auctionId + "/items", this.Item).subscribe(result =>{
+        this.router.navigateByUrl("auctions/" + auctionId + "/items");
       });
     }
     else {
-      this.apiService.PutAsync<any>("auctions/" + id, this.auction).subscribe(result =>{
-        this.auction = result;
-        this.router.navigateByUrl("auctions");
+      this.apiService.PutAsync<any>("auctions/" + auctionId + "/items/" + id, this.Item).subscribe(result =>{
+        this.router.navigateByUrl("auctions/" + auctionId + "/items");
       });
     }
   }
@@ -66,6 +64,5 @@ export class EditauctionComponent implements OnInit {
 
     }
   }
-
 
 }

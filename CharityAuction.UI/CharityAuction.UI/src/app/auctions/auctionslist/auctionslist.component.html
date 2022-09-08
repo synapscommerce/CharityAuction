@@ -1,1 +1,34 @@
-<p>auctionslist works!</p>
+<div class="is-size-3">
+    Auctions
+</div>
+
+<table class="table is-striped ">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Auction Name</th>
+            <th>Starts</th>
+            <th>Ends</th>
+            <th>Items</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let a of Auctions">
+            <td></td>
+            <td>{{a.name}}</td>
+            <td>{{a.startDate}}</td>
+            <td>{{a.endDate}}</td>
+            <td>{{a.itemCount}}</td>
+            <td>
+                <button type="button" class="button is-small is-primary" [routerLink]="['/auctions', a.id, 'items']" >{{a.itemCount}} Items</button>
+            </td>
+            <td>
+                <button type="button" class="button is-small is-primary" [routerLink]="['/auctions', a.id]" >Edit</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<button type="button" class="button is-small is-primary" [routerLink]="['/auctions', 'new']" >New</button>

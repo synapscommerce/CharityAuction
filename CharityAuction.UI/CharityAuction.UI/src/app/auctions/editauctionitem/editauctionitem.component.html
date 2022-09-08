@@ -1,0 +1,60 @@
+
+<div class="is-size-3">Edit Item</div>
+
+<div class="field">
+    <label class="label">Lot Number</label>
+    <div class="control">
+      <input class="input" type="text" [(ngModel)]="Item.lotNumber">
+    </div>
+</div>
+<div class="field">
+    <label class="label">Title</label>
+    <div class="control">
+      <input class="input" type="text" [(ngModel)]="Item.title">
+    </div>
+</div>
+<div class="field">
+    <label class="label">Description</label>
+    <div class="control">
+      <textarea class="input" rows="5" type="text" [(ngModel)]="Item.description"></textarea>
+    </div>
+</div>
+<div class="field">
+    <label class="label">Start Price</label>
+    <div class="control">
+      <input class="input" type="number" [(ngModel)]="Item.startPrice">
+    </div>
+</div>
+<div class="field">
+    <label class="label">Reserve Price</label>
+    <div class="control">
+      <input class="input" type="number" [(ngModel)]="Item.reservePrice">
+    </div>
+</div>
+
+<div class="is-size-4">Bid History</div>
+<table class="table is-striped">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Bidder Number</th>
+            <th>Name</th>
+            <th>Amount</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let b of Item.bids">
+            <td>{{b.bidDate}}</td>
+            <td>{{b.bidderNumber}}</td>
+            <td>{{b.user.firstName}} {{b.user.lastName}}</td>
+            <td>{{b.bidAmount}}</td>
+            <td><button type="button" class="button is-primary">Delete</button></td>
+        </tr>
+
+    </tbody>
+</table>
+  
+<button type="button" class="button is-primary" (click)="Save()">Save</button>
+
+<input id="upload" type="file" class="file-upload" (change)="UploadImage($event)">

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-auctionslist',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AuctionslistComponent implements OnInit {
 
-  constructor() { }
+  public Auctions : any[] | null = null;
+
+  constructor(private apiService : ApiService) { }
 
   ngOnInit(): void {
+    this.Refresh();
+  }
+
+  public Refresh(){
+    this.apiService.GetAsync<any[]>("auctions").subscribe(result => {
+      this.Auctions = result;
+    });
   }
 
 }

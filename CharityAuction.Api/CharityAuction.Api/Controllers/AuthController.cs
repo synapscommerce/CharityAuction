@@ -1,4 +1,5 @@
 ﻿using CharityAuction.Api.DTOs;
+using CharityAuction.Api.Errors;
 using CharityAuction.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,11 +25,11 @@ namespace CharityAuction.Api.Controllers
 
         [HttpPost]
         [Route("login")]
-        public LoginResponse Login(LoginRequest request)
+        public ActionResult<LoginResponse> Login(LoginRequest request)
         {
             var user = db.Users.Where(x => x.BidderNumber == request.BidderNumber).FirstOrDefault();
             if (user == null)
-                throw new Exception("User Not Found");
+                return new BadRequestWithMessageResult("User not found");
             if(string.IsNullOrEmpty(user.PinCode))
             {//first time setup - if pin is not set then set it to what the user submitted 
                 user.PinCode = request.PinCode.Trim();
@@ -36,7 +37,7 @@ namespace CharityAuction.Api.Controllers
             else
             {
                 if (user.PinCode != request.PinCode)
-                    throw new Exception("Incorrect PIN");
+                    return new BadRequestWithMessageResult("Incorrect PIN");
             }
             
 

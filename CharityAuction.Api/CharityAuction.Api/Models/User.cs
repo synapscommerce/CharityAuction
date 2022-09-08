@@ -16,8 +16,9 @@ namespace CharityAuction.Api.Models
         [MaxLength(6)]
         public virtual string BidderNumber { get; set; }
 
+        [MinLength(4)]
         [MaxLength(6)]
-        internal virtual string? PinCode { get; set; }
+        public virtual string? PinCode { get; set; }
 
         public virtual bool IsAdmin { get; set; }
 

@@ -17,6 +17,7 @@ namespace CharityAuction.Api.Models
         [AdaptIgnore(MemberSide.Destination)]
         public virtual int AuctionId { get; set; }
         [ForeignKey(nameof(AuctionId))]
+        [AdaptIgnore(MemberSide.Destination)]
         public virtual Auction Auction { get; set; }
 
         [MaxLength(255)]
@@ -26,6 +27,8 @@ namespace CharityAuction.Api.Models
         public virtual string Description { get; set; }
 
         public virtual ICollection<AuctionItemImage>? Images { get; set; }
+        [NotMapped]
+        public virtual int[] ImageIds => Images != null ? Images.Select(x => x.ImageId).ToArray() : new int[0];
 
         public virtual decimal StartPrice { get; set; }
         public virtual decimal ReservePrice { get; set; }
@@ -38,7 +41,7 @@ namespace CharityAuction.Api.Models
         public bool BiddingActive =>  Auction != null ? Auction.BiddingActive : false;
 
         [NotMapped]
-        public AuctionItemBid TopBid => Bids.OrderByDescending(x => x.BidAmount).FirstOrDefault();
+        public AuctionItemBid? TopBid => Bids == null ? null : Bids.OrderByDescending(x => x.BidAmount).FirstOrDefault();
 
         [NotMapped]
         public DateTime? StartDate => Auction?.StartDate;

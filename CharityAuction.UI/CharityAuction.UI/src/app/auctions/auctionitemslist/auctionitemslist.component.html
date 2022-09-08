@@ -1,0 +1,33 @@
+<div class="is-size-3">
+    Auction Items
+</div>
+
+<table class="table is-striped ">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Lot #</th>
+            <th>Item</th>
+            <th>Start</th>
+            <th>Reserve</th>
+            <th>Current Bid</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let a of Items">
+            <td></td>
+            <td>{{a.lotNumber}}</td>
+            <td>{{a.title}}</td>
+            <td>{{a.startPrice | currency }}</td>
+            <td>{{a.reservePrice | currency }}</td>
+            <td>{{a.topBidAmount | currency }}</td>
+            <td>
+                <button type="button" class="button is-small is-primary" [routerLink]="['/auctions', a.auctionId, 'items', a.id]" >Edit</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<button type="button" class="button is-primary" [routerLink]="['new']">Add Item</button>

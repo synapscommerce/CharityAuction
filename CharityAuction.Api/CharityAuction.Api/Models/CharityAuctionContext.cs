@@ -1,12 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NLog;
 
 namespace CharityAuction.Api.Models
 {
     public class CharityAuctionContext : Microsoft.EntityFrameworkCore.DbContext
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         public CharityAuctionContext(DbContextOptions<CharityAuctionContext> options) : base(options)
         {
-            Database.EnsureCreated();
+            logger.Info("Ensuring DB tables are created");
+            try
+            {
+                Database.EnsureCreated();
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Error ensuring DB tables are created");
+            }
         }
         public DbSet<User> Users { get; set; }
         public DbSet<UserToken> UserTokens { get; set; }

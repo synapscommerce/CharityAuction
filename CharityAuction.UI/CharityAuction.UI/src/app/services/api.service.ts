@@ -13,14 +13,13 @@ export class ApiService {
 
 
   public GetAsync<T>(url : string) : Observable<T> {
-    const headers = new HttpHeaders();
-    headers.set('Authorization', 'Bearer ' + this.authService.CurrentToken());
-    return this.httpClient.get<T>(url, { headers: headers });
+    return this.httpClient.get<T>(environment.apiUrl + "/" + url, { headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.authService.CurrentToken()) });
   }
 
   public PostAsync<T>(url : string, data : any) : Observable<T> {
-    const headers = new HttpHeaders();
-    headers.set('Authorization', 'Bearer ' + this.authService.CurrentToken());
-    return this.httpClient.post<T>(environment.apiUrl + "/" + url, data, { headers: headers });
+    return this.httpClient.post<T>(environment.apiUrl + "/" + url, data, { headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.authService.CurrentToken()) });
+  }
+  public PutAsync<T>(url : string, data : any) : Observable<T> {
+    return this.httpClient.put<T>(environment.apiUrl + "/" + url, data, { headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.authService.CurrentToken()) });
   }
 }

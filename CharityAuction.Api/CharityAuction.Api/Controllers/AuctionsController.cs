@@ -1,4 +1,5 @@
-﻿using CharityAuction.Api.Models;
+﻿using CharityAuction.Api.DTOs;
+using CharityAuction.Api.Models;
 using CharityAuction.Api.Providers;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
@@ -19,14 +20,14 @@ namespace CharityAuction.Api.Controllers
 
 
         [HttpGet]
-        [Route("auctions")]
+        [Route("")]
         public ActionResult<Auction[]> GetAuctions()
         {
             return db.Auctions.ToArray();
         }
 
         [HttpGet]
-        [Route("auctions/{id}")]
+        [Route("{id}")]
         public ActionResult<Auction> GetAuction(int id)
         {
             var auction = db.Auctions.Find(id);
@@ -36,28 +37,29 @@ namespace CharityAuction.Api.Controllers
         }
 
         [HttpPost]
-        [Route("auctions")]
-        public ActionResult<Auction> AddAuction(Auction auction)
+        [Route("")]
+        public ActionResult<Auction> AddAuction(EditAuctionRequest request)
         {
+            Auction auction = request.Adapt<Auction>();
             db.Auctions.Add(auction);
             db.SaveChanges();
             return auction;
         }
 
         [HttpPut]
-        [Route("auctions/{id}")]
-        public ActionResult<Auction> UpdateAuction(int id, Auction auction)
+        [Route("{id}")]
+        public ActionResult<Auction> UpdateAuction(int id, EditAuctionRequest request)
         {
             var existing = db.Auctions.Find(id);
             if (existing == null)
                 return new NotFoundResult();
-            auction.Adapt(existing);
+            request.Adapt(existing);
             db.SaveChanges();
             return existing;
         }
 
         [HttpGet]
-        [Route("auctions/{id}/items")]
+        [Route("{id}/items")]
         public ActionResult<AuctionItem[]> GetAuctionItems(int id)
         {
             var auction = db.Auctions.Find(id);
@@ -67,7 +69,7 @@ namespace CharityAuction.Api.Controllers
         }
 
         [HttpGet]
-        [Route("auctions/{auctionId}/items/{id}")]
+        [Route("{auctionId}/items/{id}")]
         public ActionResult<AuctionItem> GetAuctionItem(int auctionId, int id)
         {
             var auctionItem = db.AuctionItems.Find(id);
@@ -77,18 +79,19 @@ namespace CharityAuction.Api.Controllers
         }
 
         [HttpPost]
-        [Route("auctions/{auctionId}/items")]
-        public ActionResult<AuctionItem> AddAuctionItem(int auctionId, AuctionItem auctionItem)
+        [Route("{auctionId}/items")]
+        public ActionResult<AuctionItem> AddAuctionItem(int auctionId, EditAuctionItemRequest auctionItem)
         {
-            auctionItem.AuctionId = auctionId;
-            db.AuctionItems.Add(auctionItem);
+            AuctionItem item = auctionItem.Adapt<AuctionItem>();
+            item.AuctionId = auctionId;
+            db.AuctionItems.Add(item);
             db.SaveChanges();
-            return auctionItem;
+            return item;
         }
 
         [HttpPut]
-        [Route("auctions/{auctionId}/items/{id}")]
-        public ActionResult<AuctionItem> UpdateAuction(int auctionId, int id, AuctionItem auctionItem)
+        [Route("{auctionId}/items/{id}")]
+        public ActionResult<AuctionItem> UpdateAuctionItem(int auctionId, int id, EditAuctionItemRequest auctionItem)
         {
             var existing = db.AuctionItems.Find(id);
             if (existing == null)
@@ -101,7 +104,7 @@ namespace CharityAuction.Api.Controllers
         }
 
         [HttpGet]
-        [Route("auctions/{auctionId}/items/{id}/bids")]
+        [Route("{auctionId}/items/{id}/bids")]
         public ActionResult<AuctionItemBid[]> GetAuctionItemBids(int auctionId, int id)
         {
             var auctionItem = db.AuctionItems.Find(id);
@@ -114,7 +117,7 @@ namespace CharityAuction.Api.Controllers
         }
 
         [HttpDelete]
-        [Route("auctions/{auctionId}/items/{id}/bids/")]
+        [Route("{auctionId}/items/{id}/bids/")]
         public ActionResult<AuctionItemBid[]> RemoveAuctionItemBid(int auctionId, int auctionItemId, int id)
         {
             var auctionItem = db.AuctionItems.Find(auctionItemId);
@@ -133,7 +136,7 @@ namespace CharityAuction.Api.Controllers
 
 
         [HttpPost]
-        [Route("auctions/{auctionId}/items/{id}/paid")]
+        [Route("{auctionId}/items/{id}/paid")]
         public ActionResult<AuctionItem> SetAuctionItemPaid(int auctionId, int id)
         {
             var existing = db.AuctionItems.Find(id);
@@ -147,7 +150,7 @@ namespace CharityAuction.Api.Controllers
         }
 
         [HttpDelete]
-        [Route("auctions/{auctionId}/items/{id}/paid")]
+        [Route("{auctionId}/items/{id}/paid")]
         public ActionResult<AuctionItem> SetAuctionItemUnpaid(int auctionId, int id)
         {
             var existing = db.AuctionItems.Find(id);

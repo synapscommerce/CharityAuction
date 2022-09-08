@@ -1,7 +1,19 @@
 
 
-<div>
+<div *ngIf="Step == 'Number'">
     Enter your bidder number
     <input type="text" [(ngModel)]="LoginRequest.BidderNumber" >
     <button type="button" class="button is-primary" (click)="CheckBidderNumber()">Next</button>
+</div>
+<div *ngIf="Step == 'Pin'">
+    Enter your PIN Code
+    <input type="text" [(ngModel)]="LoginRequest.PinCode" />
+
+    <button type="button" class="button is-primary" (click)="Login()">Log In</button>
+</div>
+<div *ngIf="Step == 'SetPin'">
+    This if your first time logging in, Please select a PIN
+    <input type="text" [(ngModel)]="LoginRequest.PinCode" />
+
+    <button type="button" class="button is-primary" (click)="Login()">Log In</button>
 </div>
