@@ -19,7 +19,7 @@ namespace CharityAuction.Api.Controllers
         public LoginPreCheckResponse Check(LoginPreCheckRequest request)
         {
             var user = db.Users.Where(x => x.BidderNumber == request.BidderNumber).FirstOrDefault();
-            return new LoginPreCheckResponse() { BidderNumberExists = user != null };
+            return new LoginPreCheckResponse() { BidderNumberExists = user != null, HasPin = !string.IsNullOrEmpty(user?.PinCode) };
         }
 
         [HttpPost]
@@ -29,10 +29,22 @@ namespace CharityAuction.Api.Controllers
             var user = db.Users.Where(x => x.BidderNumber == request.BidderNumber).FirstOrDefault();
             if (user == null)
                 throw new Exception("User Not Found");
-            if (user.PinCode != request.PinCode)
-                throw new Exception("Incorrect PIN");
+            if(string.IsNullOrEmpty(user.PinCode))
+            {//first time setup - if pin is not set then set it to what the user submitted 
+                user.PinCode = request.PinCode.Trim();
+            }
+            else
+            {
+                if (user.PinCode != request.PinCode)
+                    throw new Exception("Incorrect PIN");
+            }
+            
 
-            return new LoginResponse();
+            UserToken newToken = new UserToken() { DateCreated = DateTime.UtcNow, Key = Guid.NewGuid(), User = user };
+            db.UserTokens.Add(newToken);
+            db.SaveChanges();   
+
+            return new LoginResponse() {  IsAdmin = user.IsAdmin, Token = newToken.Key.ToString() };
 
         }
     }

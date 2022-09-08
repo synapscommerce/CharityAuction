@@ -1,4 +1,5 @@
 using CharityAuction.Api.Models;
+using CharityAuction.Api.Providers;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<CharityAuctionContext>(options =>
-        options.UseSqlServer(builder.Configuration.GetConnectionString("default")));
+        options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("default")));
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
@@ -19,6 +20,9 @@ builder.Services.AddCors(options =>
             policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
         });
 });
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<AdminUserProvider>();
+builder.Services.AddScoped<UserProvider>();
 
 var app = builder.Build();
 

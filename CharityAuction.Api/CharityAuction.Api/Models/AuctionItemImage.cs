@@ -6,15 +6,15 @@ namespace CharityAuction.Api.Models
     public class AuctionItemImage
     {
         [Key]
-        public int Id { get; set; }
+        public virtual int Id { get; set; }
 
-        public int AuctionId { get; set; }
+        public virtual int AuctionId { get; set; }
         [ForeignKey(nameof(AuctionId))]
-        public AuctionItem AuctionItem { get; set; }
+        public virtual AuctionItem AuctionItem { get; set; }
 
-        public int ImageId { get; set; }
+        public virtual int ImageId { get; set; }
         [ForeignKey(nameof(ImageId))]
-        public Image Image { get; set; }
-        public int Index { get; set; }
+        public virtual Image Image { get; set; }
+        public virtual int Index { get; set; }
     }
 }

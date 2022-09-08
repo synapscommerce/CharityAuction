@@ -10,12 +10,15 @@ namespace CharityAuction.Api.DTOs
     public class LoginPreCheckResponse
     {
         public bool BidderNumberExists { get; set; }
+        public bool HasPin { get; set; }
     }
     public class LoginRequest
     {
         [Required]
         public string BidderNumber { get; set; }
         [Required]
+        [MinLength(4)]
+        [MaxLength(6)]
         public string PinCode { get; set; }
     }
 

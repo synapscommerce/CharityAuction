@@ -1,13 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CharityAuction.Api.Models
 {
     public class UserToken
     {
         [Key]
-        public Guid Key { get; set; }
+        public virtual Guid Key { get; set; }
 
-        public DateTime DateCreated { get; set; }
+        [Required]
+        public virtual int UserId { get; set; }
+        [ForeignKey(nameof(UserId))]
+        public virtual User User { get; set; }
+
+        public virtual DateTime DateCreated { get; set; }
 
     }
 }
