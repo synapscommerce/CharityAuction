@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { ApiService } from './api.service';
 import { AuthService } from './auth.service';
 
@@ -7,7 +8,7 @@ import { AuthService } from './auth.service';
 })
 export class LoginService {
 
-  constructor(private apiService : ApiService, private authService : AuthService) { }
+  constructor(private apiService : ApiService, private authService : AuthService, private router : Router) { }
 
   public async CheckBidderNumberExists(bidderNumber : string) : Promise<any>{
     let promise = new Promise((resolve, reject) => {
@@ -31,5 +32,10 @@ export class LoginService {
       });
     });
     return promise;
+  }
+
+  public Logout(){
+    this.authService.SetToken("", false);
+    this.router.navigateByUrl("/login");
   }
 }

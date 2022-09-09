@@ -38,6 +38,8 @@ namespace CharityAuction.Api.DTOs
 
         public bool YouAreLeading { get; set; }
         public bool YouAreOutbid { get; set; }
+        public decimal NextBidAmount { get; set; }
+        
 
     }
 }

@@ -1,4 +1,4 @@
-<nav class="navbar" role="navigation" aria-label="main navigation">
+<nav  *ngIf="authService.IsLoggedIn()" class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <a class="navbar-item">
       <img src="" width="112" height="28">
@@ -16,11 +16,16 @@
         Home
       </a>
 
-      <a class="navbar-item" [routerLink]="['auctions']">
+      <a *ngIf="authService.IsAdmin()" class="navbar-item" [routerLink]="['auctions']">
         Auctions
       </a>
-      <a class="navbar-item" [routerLink]="['users']">
+      <a *ngIf="authService.IsAdmin()" class="navbar-item" [routerLink]="['users']">
         Users
+      </a>
+    </div>
+    <div class="navbar-end">
+      <a class="navbar-item" (click)="loginService.Logout()">
+        Log Out
       </a>
     </div>
   </div>

@@ -1,19 +1,93 @@
+<div class="has-text-centered" style="max-width: 30em; margin: 0 auto;">
+    <div *ngIf="Step == 'Number'">
+        <div class="is-size-3">
+            Enter your bidder number
+        </div>
+        <div class="field has-addons">
+            <div class="control is-expanded">
+              <input class="input is-large" disabled type="text"  [(ngModel)]="LoginRequest.BidderNumber">
+            </div>
+            <div class="control">
+              <a class="button is-info is-large" (click)="CheckBidderNumber()">
+                Next
+              </a>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="Step == 'Pin'">
+        <div class="is-size-3">
+            Enter your PIN Code
+        </div>
+        Bidder Number {{LoginRequest.BidderNumber}}
+        
+        <div style="display: block; height: 8em; padding-top: 3em;">
+            <span *ngFor="let c of LoginRequest.PinCode.split('')">
+                <fa-icon [icon]="Icons.faCircle" style="margin: 1em;"></fa-icon>
+            </span>
+        </div>
+            
+        <div class="columns">
+            <div class="column is-6 has-text-left">
+                <a class="button is-default is-large" (click)="Back()">
+                    Back
+                  </a>        
+            </div>
+            <div class="column is-6 has-text-right" >
+                <a class="button is-info is-large" (click)="Login()">
+                    Log In
+                  </a>        
+            </div>
+        </div>
+        
+    </div>
+    <div *ngIf="Step == 'SetPin'">
+        This if your first time logging in, Please select a PIN
+        <input type="text" [(ngModel)]="LoginRequest.PinCode" />
 
+        <button type="button" class="button is-primary" (click)="Login()">Log In</button>
+    </div>
 
-<div *ngIf="Step == 'Number'">
-    Enter your bidder number
-    <input type="text" [(ngModel)]="LoginRequest.BidderNumber" >
-    <button type="button" class="button is-primary" (click)="CheckBidderNumber()">Next</button>
+    <div class="keypad">
+        <div class="columns is-mobile">
+            <div class="column is-one-quarter ">
+                <div class="key" (click)="KeyPressed('7')">7</div>
+            </div>
+            <div class="column is-one-quarter">
+                <div class="key" (click)="KeyPressed('8')">8</div>
+            </div>
+            <div class="column is-one-quarter">
+                <div class="key" (click)="KeyPressed('9')">9</div>
+            </div>
+            <div class="column is-one-quarter">
+                <div class="key" (click)="Backspace()"><fa-icon [icon]="Icons.faDeleteLeft"></fa-icon></div>
+            </div>
+        </div>
+        <div class="columns is-mobile">
+            <div class="column is-3">
+                <div class="key" (click)="KeyPressed('4')">4</div>
+            </div>
+            <div class="column is-3">
+                <div class="key" (click)="KeyPressed('5')">5</div>
+            </div>
+            <div class="column is-3">
+                <div class="key" (click)="KeyPressed('6')">6</div>
+            </div>
+        </div>
+        <div class="columns is-mobile">
+            <div class="column is-3">
+                <div class="key" (click)="KeyPressed('1')">1</div>
+            </div>
+            <div class="column is-3">
+                <div class="key" (click)="KeyPressed('2')">2</div>
+            </div>
+            <div class="column is-3">
+                <div class="key" (click)="KeyPressed('3')">3</div>
+            </div>
+        </div>
+        <div class="columns is-mobile">
+            <div class="column is-6">
+                <div class="key" (click)="KeyPressed('0')">0</div>
+            </div>
+        </div>
 </div>
-<div *ngIf="Step == 'Pin'">
-    Enter your PIN Code
-    <input type="text" [(ngModel)]="LoginRequest.PinCode" />
-
-    <button type="button" class="button is-primary" (click)="Login()">Log In</button>
-</div>
-<div *ngIf="Step == 'SetPin'">
-    This if your first time logging in, Please select a PIN
-    <input type="text" [(ngModel)]="LoginRequest.PinCode" />
-
-    <button type="button" class="button is-primary" (click)="Login()">Log In</button>
 </div>

@@ -1,1 +1,86 @@
-<p>home works!</p>
+<div class="is-size-3">
+    Auctions
+</div>
+
+<table class="table is-striped">
+    <thead>
+        <tr>
+            <th>Lot #</th>
+            <th>Item</th>
+            <th>Description</th>
+            <th>Bid</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let i of Items">
+            <td>{{i.lotNumber}}</td>
+            <td>{{i.title}}</td>
+            <td>{{i.description}}</td>
+            <td>
+                <span *ngIf="i.topBidBidAmount != null">
+                    <span *ngIf="i.youAreLeading == true" class="tag is-success">
+                        {{i.topBidBidAmount | currency}}
+                        You Lead
+                    </span>
+                    <span *ngIf="i.youAreOutbid == true" class="tag is-danger">
+                        {{i.topBidBidAmount | currency}}
+                        outbid!
+                    </span>
+                    <span *ngIf="i.youAreOutbid != true && i.youAreLeading != true">
+                        {{i.topBidBidAmount | currency}}
+                    </span>
+                </span>
+                <span *ngIf="i.topBidBidAmount == null">
+                    no bids!
+                </span>
+            </td>
+            <td>
+                <button type="button" class="button is-primary is-small" (click)="BidTarget = i">Place Bid</button>
+            </td>
+
+        </tr>
+
+    </tbody>
+</table>
+
+
+
+<div *ngIf="BidTarget != null">
+    <div class="modalBg"></div>
+    <div class="bidModal">
+        <div class="is-size-4 has-text-centered">Place Bid</div>
+        <div class="card">
+            <div class="card-content">
+              <p class="title">
+                {{BidTarget.title}}
+              </p>
+              <p class="subtitle">
+                {{BidTarget.description}}
+              </p>
+              <p class="is-size-6 has-text-centered">
+                <span *ngIf="BidTarget.topBidBidAmount != null">
+                    Current Bid {{BidTarget.topBidBidAmount | currency}}
+                </span>
+                Minumum Next Bid: {{BidTarget.nextBidAmount | currency}}
+              </p>
+            </div>
+            <footer class="card-footer">
+              <p class="card-footer-item" (click)="BidTarget = null">
+                <span>
+                  Cancel
+                </span>
+              </p>
+              <p class="card-footer-item">
+                <span *ngIf="BidTarget.youAreLeading == true">
+                    You already lead the bidding
+                </span>
+                <span *ngIf="BidTarget.youAreLeading != true" class="button is-primary" (click)="PlaceBid(BidTarget, BidTarget.nextBidAmount)">
+                  Place {{BidTarget.nextBidAmount | currency }} Bid
+                </span>
+              </p>
+            </footer>
+          </div>
+
+    </div>
+</div>

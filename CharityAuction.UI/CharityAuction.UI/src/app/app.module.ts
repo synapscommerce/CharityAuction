@@ -13,6 +13,8 @@ import { EditauctionitemComponent } from './auctions/editauctionitem/editauction
 import { HomeComponent } from './bidding/home/home.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angular-datetime-picker';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -32,6 +34,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     HttpClientModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
+    FontAwesomeModule,
+    ToastrModule.forRoot()
   ],
   providers: [AuthGuard, HttpClient],
   bootstrap: [AppComponent]

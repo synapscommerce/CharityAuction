@@ -1,0 +1,22 @@
+
+.keypad{
+    display: inline-block;
+    border: solid 1px black;
+    border-radius: 2em;
+    padding: 1em;
+    margin-top: 1em;
+    width: 30em;
+    .key{
+        border: solid 1px black;
+        border-radius: 0.25em;
+        background-color: #eee;
+        font-size: 3em;
+        padding-top : 0.5em;
+        padding-bottom : 0.5em;
+        text-align: center;
+    }
+}
+.field{
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
