@@ -26,5 +26,7 @@ namespace CharityAuction.Api.DTOs
     {
         public bool IsAdmin { get; set; }
         public string Token { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
     }
 }

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import { catchError, Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-editauctionitem',
@@ -10,7 +12,8 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class EditauctionitemComponent implements OnInit {
   public Item : any = {};
-  constructor(private apiService : ApiService, private route : ActivatedRoute, private router : Router) { 
+  public ImageUrl : string = environment.apiUrl + "/public/images/";
+  constructor(private apiService : ApiService, private route : ActivatedRoute, private router : Router, private toastr : ToastrService) { 
   }
 
   ngOnInit(): void {
@@ -50,19 +53,32 @@ export class EditauctionitemComponent implements OnInit {
     var fileByteArray: number[] = [];
     var reader = new FileReader();
     let api = this.apiService;
+    let item = this.Item;
+    let toastr = this.toastr;
     reader.onload = function () {
       var arrayBuffer = this.result as ArrayBuffer,
         array = new Uint8Array(arrayBuffer)
       for (var i = 0; i < array.length; i++) {
         fileByteArray.push(array[i]);
       }
-      let obs = new Observable<number>(subscriber => {
-        api.PostAsync<any>("images", { FileName: file.name, FileBytes: file}).subscribe(result => {
-            subscriber.next(result.Id);
+        api.PostAsync<any>("images", { FileName: file.name, FileBytes: fileByteArray}).pipe(catchError((error : any) => { 
+          toastr.warning(error.error.Message, "Error");
+          return of(null); 
+        })).subscribe(result => {
+            if(item.imageIds == null) item.imageIds = [];
+            item.imageIds.push(result.id);
         });
-    })
+    };
+    var x = reader.readAsArrayBuffer(image.target.files[0]);
 
-    }
   }
 
+  public RemoveImage(id : number){
+    for(let i=0; i < this.Item.imageIds.length; i++){
+      if(this.Item.imageIds[i] == id){
+        this.Item.imageIds.splice(i, 1);
+        break;
+      }
+    }
+  }
 }

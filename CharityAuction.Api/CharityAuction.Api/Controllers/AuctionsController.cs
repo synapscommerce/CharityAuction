@@ -21,77 +21,77 @@ namespace CharityAuction.Api.Controllers
 
         [HttpGet]
         [Route("")]
-        public ActionResult<Auction[]> GetAuctions()
+        public ActionResult<AuctionResponse[]> GetAuctions()
         {
-            return db.Auctions.ToArray();
+            return db.Auctions.Adapt<AuctionResponse[]>();
         }
 
         [HttpGet]
         [Route("{id}")]
-        public ActionResult<Auction> GetAuction(int id)
+        public ActionResult<AuctionResponse> GetAuction(int id)
         {
             var auction = db.Auctions.Find(id);
             if (auction == null)
                 return new NotFoundResult();
-            return auction;
+            return auction.Adapt<AuctionResponse>();
         }
 
         [HttpPost]
         [Route("")]
-        public ActionResult<Auction> AddAuction(EditAuctionRequest request)
+        public ActionResult<AuctionResponse> AddAuction(EditAuctionRequest request)
         {
             Auction auction = request.Adapt<Auction>();
             db.Auctions.Add(auction);
             db.SaveChanges();
-            return auction;
+            return auction.Adapt<AuctionResponse>();
         }
 
         [HttpPut]
         [Route("{id}")]
-        public ActionResult<Auction> UpdateAuction(int id, EditAuctionRequest request)
+        public ActionResult<AuctionResponse> UpdateAuction(int id, EditAuctionRequest request)
         {
             var existing = db.Auctions.Find(id);
             if (existing == null)
                 return new NotFoundResult();
             request.Adapt(existing);
             db.SaveChanges();
-            return existing;
+            return existing.Adapt<AuctionResponse>();
         }
 
         [HttpGet]
         [Route("{id}/items")]
-        public ActionResult<AuctionItem[]> GetAuctionItems(int id)
+        public ActionResult<AuctionItemResponse[]> GetAuctionItems(int id)
         {
             var auction = db.Auctions.Find(id);
             if (auction == null)
                 return new NotFoundResult();
-            return auction.Items.ToArray();
+            return auction.Items.Adapt<AuctionItemResponse[]>();
         }
 
         [HttpGet]
         [Route("{auctionId}/items/{id}")]
-        public ActionResult<AuctionItem> GetAuctionItem(int auctionId, int id)
+        public ActionResult<AuctionItemResponse> GetAuctionItem(int auctionId, int id)
         {
             var auctionItem = db.AuctionItems.Find(id);
             if (auctionItem == null)
                 return new NotFoundResult();
-            return auctionItem;
+            return auctionItem.Adapt<AuctionItemResponse>();
         }
 
         [HttpPost]
         [Route("{auctionId}/items")]
-        public ActionResult<AuctionItem> AddAuctionItem(int auctionId, EditAuctionItemRequest auctionItem)
+        public ActionResult<AuctionItemResponse> AddAuctionItem(int auctionId, EditAuctionItemRequest auctionItem)
         {
             AuctionItem item = auctionItem.Adapt<AuctionItem>();
             item.AuctionId = auctionId;
             db.AuctionItems.Add(item);
             db.SaveChanges();
-            return item;
+            return item.Adapt<AuctionItemResponse>();
         }
 
         [HttpPut]
         [Route("{auctionId}/items/{id}")]
-        public ActionResult<AuctionItem> UpdateAuctionItem(int auctionId, int id, EditAuctionItemRequest auctionItem)
+        public ActionResult<AuctionItemResponse> UpdateAuctionItem(int auctionId, int id, EditAuctionItemRequest auctionItem)
         {
             var existing = db.AuctionItems.Find(id);
             if (existing == null)
@@ -100,7 +100,7 @@ namespace CharityAuction.Api.Controllers
                 return new NotFoundResult();
             auctionItem.Adapt(existing);
             db.SaveChanges();
-            return existing;
+            return existing.Adapt<AuctionItemResponse>();
         }
 
         [HttpGet]

@@ -1,23 +1,29 @@
-<nav  *ngIf="authService.IsLoggedIn()" class="navbar" role="navigation" aria-label="main navigation">
+<nav *ngIf="authService.IsLoggedIn()" class="navbar" role="navigation" aria-label="main navigation" (mousedown)="loginService.ResetAutoLogoutTimer()">
   <div class="navbar-brand">
     <a class="navbar-item">
-      <img src="" width="112" height="28">
+      <img [src]="LogoUrl" width="112" height="28">
     </a>
-
-    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+    <a class="navbar-item">
+      Logged in as {{authService.FirstName()}} &nbsp;
+      <button type="button" class="button is-small is-danger" (click)="loginService.Logout()">Log Out</button>
+      <span *ngIf="SecondsTilLogout > 0 && SecondsTilLogout <= 20">
+        &nbsp;auto-logout in {{SecondsTilLogout}}
+      </span>
+    </a>
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="mainnav" (click)="ShowMenu = !ShowMenu">
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
     </a>
   </div>
-  <div class="navbar-menu">
+  <div id="mainnav" class="navbar-menu" [ngClass]="{ 'is-active' : ShowMenu }" (click)="ShowMenu = false">
     <div class="navbar-start">
       <a class="navbar-item" [routerLink]="['/']">
         Home
       </a>
 
       <a *ngIf="authService.IsAdmin()" class="navbar-item" [routerLink]="['auctions']">
-        Auctions
+        Manage Auctions
       </a>
       <a *ngIf="authService.IsAdmin()" class="navbar-item" [routerLink]="['users']">
         Users
@@ -31,4 +37,7 @@
   </div>
 </nav>
 
+<div (mousedown)="loginService.ResetAutoLogoutTimer()" (touchstart)="loginService.ResetAutoLogoutTimer()">
 <router-outlet></router-outlet>
+</div>
+

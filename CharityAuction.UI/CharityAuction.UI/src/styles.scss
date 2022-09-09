@@ -1,5 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+html, body {
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 99);
+    width: 100vw;
+    width: calc(var(--vw, 1vw) * 99);
 
+  }
 
 @import "../node_modules/bulma/bulma.sass";
 @import "~@danielmoncada/angular-datetime-picker/assets/style/picker.min.css";

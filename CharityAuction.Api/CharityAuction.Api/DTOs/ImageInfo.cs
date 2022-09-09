@@ -1,8 +1,8 @@
 ﻿namespace CharityAuction.Api.DTOs
 {
-    public class ImageUploadRequest 
+    public class ImageInfo
     {
         public string FileName { get; set; }
-        public int[] FileBytes { get; set; }
+        public int Id { get; set; }
     }
 }

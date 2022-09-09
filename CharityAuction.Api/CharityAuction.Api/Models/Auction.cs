@@ -8,7 +8,6 @@ namespace CharityAuction.Api.Models
     public class Auction
     {
         [Key]
-        [AdaptIgnore]
 
         public virtual int Id { get; set; }
 

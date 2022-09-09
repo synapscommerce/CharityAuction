@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 using Mapster;
+using System.Runtime.Serialization;
 
 namespace CharityAuction.Api.Models
 {
@@ -26,9 +27,40 @@ namespace CharityAuction.Api.Models
         [MaxLength(2048)]
         public virtual string Description { get; set; }
 
+        [AdaptIgnore]
+        [JsonIgnore]
+        [IgnoreDataMember]
         public virtual ICollection<AuctionItemImage>? Images { get; set; }
         [NotMapped]
-        public virtual int[] ImageIds => Images != null ? Images.Select(x => x.ImageId).ToArray() : new int[0];
+        public virtual int[] ImageIds { 
+            get => Images != null ? Images.Select(x => x.ImageId).ToArray() : new int[0]; 
+            set
+            {
+                Dictionary<int, AuctionItemImage> existing = new Dictionary<int, AuctionItemImage>();
+                if(Images!= null)
+                    foreach (var i in this.Images)
+                        existing.Add(i.ImageId, i);
+                int index = 0;
+                foreach(var i in value)
+                {
+                    index += 1;
+                    if(existing.ContainsKey(i))
+                    {
+                        existing[i].Index = index;
+                        existing.Remove(i);
+                    }
+                    else
+                    {
+                        this.Images.Add(new AuctionItemImage() { ImageId = i, Index = index });
+                    }
+                }
+                foreach(var i in existing.Values)
+                {
+                    Images.Remove(i);
+                }
+            }
+        
+        }
 
         public virtual decimal StartPrice { get; set; }
         public virtual decimal ReservePrice { get; set; }

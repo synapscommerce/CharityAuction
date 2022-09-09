@@ -21,7 +21,13 @@
         <owl-date-time #dt2></owl-date-time>
     </div>
   </div>
-  
+    <div class="field">
+    <label class="label">Image</label>
+    <div class="control">
+        <img [src]="ImageUrl + auction.logoImageId" >
+        <input id="upload" type="file" class="file-upload" (change)="UploadImage($event)">
+    </div>
+  </div>
 <button type="button" class="button is-primary" (click)="Save()">Save</button>
 
 <input id="upload" type="file" class="file-upload" (change)="UploadImage($event)">

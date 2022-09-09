@@ -31,6 +31,16 @@
       <input class="input" type="number" [(ngModel)]="Item.reservePrice">
     </div>
 </div>
+<div class="field">
+    <label class="label">Images</label>
+    <div class="control">
+        <div *ngFor="let i of Item.imageIds">
+            <img [src]="ImageUrl + i" >
+            <button type="button" class="button is-default" (click)="RemoveImage(i)">Remove</button>
+        </div>
+        <input id="upload" type="file" class="file-upload" (change)="UploadImage($event)">
+    </div>
+</div>
 
 <div class="is-size-4">Bid History</div>
 <table class="table is-striped">
@@ -57,4 +67,3 @@
   
 <button type="button" class="button is-primary" (click)="Save()">Save</button>
 
-<input id="upload" type="file" class="file-upload" (change)="UploadImage($event)">

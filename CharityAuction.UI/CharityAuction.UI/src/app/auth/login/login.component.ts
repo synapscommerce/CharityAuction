@@ -4,6 +4,8 @@ import { ApiService } from 'src/app/services/api.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { LoginService } from 'src/app/services/login.service';
 import { faDeleteLeft, faCircle } from '@fortawesome/free-solid-svg-icons';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-login',
@@ -17,7 +19,7 @@ export class LoginComponent implements OnInit {
   public Step : string = "Number";
   public returnUrl : string = "";
 
-  constructor(private loginService : LoginService, private router : Router, private route : ActivatedRoute) { }
+  constructor(private loginService : LoginService, private router : Router, private route : ActivatedRoute,  private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
@@ -60,6 +62,9 @@ export class LoginComponent implements OnInit {
           this.Step = "Pin";
         else
           this.Step = "SetPin";
+      }
+      else{
+        this.toastr.warning("Unknown Bidder Number", "Error");
       }
     });
   }

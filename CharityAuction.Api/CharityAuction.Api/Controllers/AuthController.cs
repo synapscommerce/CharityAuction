@@ -45,7 +45,7 @@ namespace CharityAuction.Api.Controllers
             db.UserTokens.Add(newToken);
             db.SaveChanges();   
 
-            return new LoginResponse() {  IsAdmin = user.IsAdmin, Token = newToken.Key.ToString() };
+            return new LoginResponse() {  IsAdmin = user.IsAdmin, Token = newToken.Key.ToString(), FirstName = user.FirstName, LastName = user.LastName };
 
         }
     }

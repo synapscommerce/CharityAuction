@@ -48,6 +48,7 @@ namespace CharityAuction.Api.Controllers
         [Route("items/{id}/bids")]
         public ActionResult<BiddableItemResponse> AddBid(int id, BidRequest request)
         {
+
             AuctionItem item = db.AuctionItems.Find(id);
             if (item == null)
                 return new NotFoundResult();

@@ -3,16 +3,10 @@
         <div class="is-size-3">
             Enter your bidder number
         </div>
-        <div class="field has-addons">
-            <div class="control is-expanded">
-              <input class="input is-large" disabled type="text"  [(ngModel)]="LoginRequest.BidderNumber">
-            </div>
-            <div class="control">
-              <a class="button is-info is-large" (click)="CheckBidderNumber()">
-                Next
-              </a>
-            </div>
-        </div>
+        <div class="is-size-1">&nbsp;{{LoginRequest.BidderNumber}}&nbsp;</div>
+        <a class="button is-info is-large" (click)="CheckBidderNumber()">
+            Next
+          </a>
     </div>
     <div *ngIf="Step == 'Pin'">
         <div class="is-size-3">
@@ -41,10 +35,33 @@
         
     </div>
     <div *ngIf="Step == 'SetPin'">
-        This if your first time logging in, Please select a PIN
-        <input type="text" [(ngModel)]="LoginRequest.PinCode" />
-
-        <button type="button" class="button is-primary" (click)="Login()">Log In</button>
+        <div class="is-size-3">
+            Choose a PIN Code
+        </div>
+        Bidder Number {{LoginRequest.BidderNumber}}
+        <div class="notification is-info">
+            This is your first time logging in, please select a 4-6 digit PIN Code.
+        </div>
+        
+        <div style="display: block; height: 8em; padding-top: 3em;">
+            <span *ngFor="let c of LoginRequest.PinCode.split('')">
+                <fa-icon [icon]="Icons.faCircle" style="margin: 1em;"></fa-icon>
+            </span>
+        </div>
+            
+        <div class="columns">
+            <div class="column is-6 has-text-left">
+                <a class="button is-default is-large" (click)="Back()">
+                    Back
+                  </a>        
+            </div>
+            <div class="column is-6 has-text-right" >
+                <a class="button is-info is-large" (click)="Login()">
+                    Set PIN
+                  </a>        
+            </div>
+        </div>
+        
     </div>
 
     <div class="keypad">

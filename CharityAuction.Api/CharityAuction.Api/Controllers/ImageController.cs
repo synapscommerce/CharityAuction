@@ -21,13 +21,14 @@ namespace CharityAuction.Api.Controllers
 
         [HttpPost]
         [Route("")]
-        public ActionResult AddImage(ImageUploadRequest request)
+        [DisableRequestSizeLimit]
+        public ActionResult<ImageInfo> AddImage([FromBody]ImageUploadRequest request)
         {
-            Image i = new Image() { FileBytes = request.FileBytes, FileName = request.FileName, FileLength = request.FileBytes.Length };
+            Image i = new Image() { FileBytes = request.FileBytes.Select(x => (byte)x).ToArray(), FileName = request.FileName, FileLength = request.FileBytes.Length };
             db.Images.Add(i);
             db.SaveChanges();
 
-            return new AcceptedResult();
+            return new ImageInfo() {  FileName = i.FileName, Id = i.Id };
         }
 
         [HttpGet]

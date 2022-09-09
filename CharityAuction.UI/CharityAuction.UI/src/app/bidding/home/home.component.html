@@ -1,58 +1,75 @@
-<div class="is-size-3">
+<div class="is-size-3 has-text-centered">
     Auctions
 </div>
-
-<table class="table is-striped">
-    <thead>
-        <tr>
-            <th>Lot #</th>
-            <th>Item</th>
-            <th>Description</th>
-            <th>Bid</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let i of Items">
-            <td>{{i.lotNumber}}</td>
-            <td>{{i.title}}</td>
-            <td>{{i.description}}</td>
-            <td>
-                <span *ngIf="i.topBidBidAmount != null">
-                    <span *ngIf="i.youAreLeading == true" class="tag is-success">
-                        {{i.topBidBidAmount | currency}}
-                        You Lead
-                    </span>
-                    <span *ngIf="i.youAreOutbid == true" class="tag is-danger">
-                        {{i.topBidBidAmount | currency}}
-                        outbid!
-                    </span>
-                    <span *ngIf="i.youAreOutbid != true && i.youAreLeading != true">
-                        {{i.topBidBidAmount | currency}}
-                    </span>
+<div style="padding-left: 0.5em; padding-right: 0.5em;">
+  <div *ngFor="let i of Items" class="box" (click)="BidTarget = i" [ngStyle]="{ 'background-color' : i.youAreLeading ? '#defceb' : (i.youAreOutbid ? '#fcdee5' : 'white') }">
+      <article class="media">
+        <div class="media-left">
+          <figure class="image is-64x64">
+            <img *ngIf="i.imageIds.length > 0" [src]="ImageUrl + i.imageIds[0]" alt="Image">
+          </figure>
+        </div>
+        <div class="media-content">
+          <div class="content">
+            <p>
+              <strong>{{i.title}}</strong> 
+              <br>
+              <span class="is-size-7 is-hidden-mobile" style="line-height: 0.5;">
+                {{i.description}}
+              </span>
+            </p>
+          </div>
+          <nav class="level is-mobile">
+            <div class="level-left">
+              <a class="level-item is-size-5">
+                
+                <span *ngIf="i.youAreLeading == true" class="">
+                  {{i.topBidBidAmount | currency}}
+                  <span style="color: green">
+                    <fa-icon [icon]="Icons.faCommentsDollar"></fa-icon>
+                    You Lead
                 </span>
-                <span *ngIf="i.topBidBidAmount == null">
-                    no bids!
                 </span>
-            </td>
-            <td>
-                <button type="button" class="button is-primary is-small" (click)="BidTarget = i">Place Bid</button>
-            </td>
-
-        </tr>
-
-    </tbody>
-</table>
+                <span *ngIf="i.youAreOutbid == true" class="">
+                    {{i.topBidBidAmount | currency}}
+                    <span style="color: red">
+                      <fa-icon [icon]="Icons.faCommentsDollar"></fa-icon>
+                      you were outbid!
+                  </span>
+                </span>
+                <span *ngIf="i.youAreOutbid != true && i.youAreLeading != true">
+                    <fa-icon [icon]="Icons.faCommentsDollar"></fa-icon>
+                    {{i.topBidBidAmount | currency}}
+                </span>
+                <span *ngIf="i.topBidBidAmount != null && i.reservePrice > i.topBidBidAmount">
+                  (Reserve not met)
+                </span>  
+              </a>
+              <a class="level-item" aria-label="retweet">
+                <span class="icon is-small">
+                  <i class="fas fa-retweet" aria-hidden="true"></i>
+                </span>
+              </a>
+              <a class="level-item" aria-label="like">
+                <span class="icon is-small">
+                  <i class="fas fa-heart" aria-hidden="true"></i>
+                </span>
+              </a>
+            </div>
+          </nav>
+        </div>
+      </article>
+  </div>
+</div>
 
 
 
 <div *ngIf="BidTarget != null">
-    <div class="modalBg"></div>
+    <div class="modalBg" (click)="BidTarget = null"></div>
     <div class="bidModal">
-        <div class="is-size-4 has-text-centered">Place Bid</div>
         <div class="card">
             <div class="card-content">
-              <p class="title">
+              <p class="title has-text-centered">
                 {{BidTarget.title}}
               </p>
               <p class="subtitle">
@@ -64,6 +81,7 @@
                 </span>
                 Minumum Next Bid: {{BidTarget.nextBidAmount | currency}}
               </p>
+              
             </div>
             <footer class="card-footer">
               <p class="card-footer-item" (click)="BidTarget = null">

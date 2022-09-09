@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import { catchError, Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/services/api.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-editauction',
@@ -11,7 +13,9 @@ import { ApiService } from 'src/app/services/api.service';
 export class EditauctionComponent implements OnInit {
 
   public auction : any = {};
-  constructor(private apiService : ApiService, private route : ActivatedRoute, private router : Router) { 
+  public ImageUrl : string = environment.apiUrl + "/public/images/";
+
+  constructor(private apiService : ApiService, private route : ActivatedRoute, private router : Router, private toastr : ToastrService) { 
   }
 
   ngOnInit(): void {
@@ -52,19 +56,23 @@ export class EditauctionComponent implements OnInit {
     var fileByteArray: number[] = [];
     var reader = new FileReader();
     let api = this.apiService;
+    let auction = this.auction;
+    let toastr = this.toastr;
     reader.onload = function () {
       var arrayBuffer = this.result as ArrayBuffer,
         array = new Uint8Array(arrayBuffer)
       for (var i = 0; i < array.length; i++) {
         fileByteArray.push(array[i]);
       }
-      let obs = new Observable<number>(subscriber => {
-        api.PostAsync<any>("images", { FileName: file.name, FileBytes: file}).subscribe(result => {
-            subscriber.next(result.Id);
+        api.PostAsync<any>("images", { FileName: file.name, FileBytes: fileByteArray}).pipe(catchError((error : any) => { 
+          toastr.warning(error.error.Message, "Error");
+          return of(null); 
+        })).subscribe(result => {
+            auction.logoImageId = result.id;
         });
-    })
+    };
+    var x = reader.readAsArrayBuffer(image.target.files[0]);
 
-    }
   }
 
 
