@@ -1,0 +1,28 @@
+<div style="margin: 5vh;">
+    <div class="columns">
+        <div class="column is-4">
+            <img [src]="ImageBaseUrl + '/public/images/' + MainItem.imageIds[0]" style='width: 30vw;'>
+        </div>
+        <div class="column is-8">
+            <div style="font-size: 6vh;" class="has-text-centered">{{MainItem.title}}</div>
+            <div style="margin: 3vh;" class="is-size-3">{{MainItem.description}}</div>
+
+            <div style="font-size: 10vh" class="has-text-centered">
+                <span style="font-size: 0.7em">Current Bid</span>
+                <span></span>
+                {{MainItem.topBidBidAmount | currency}}
+            </div>
+            <div *ngIf="MainItem.reservePrice > MainItem.topBidBidAmount" class="is-size-3 has-text-centered">
+                (Reserve Not Met)
+            </div>
+
+            <div class="box" style="margin-top: 2em;">
+                <div class="is-size-3 has-text-centered">Recent Bids</div>
+                <div class="is-size-4 has-text-centered" style="height: 1.2em;" *ngFor="let f of Feed">
+                    {{f}}
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<div class="is-size-1">Users</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Bidder #</th>
+            <th>Name</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let u of Users">
+            <td>{{u.bidderNumber}}</td>
+            <td>{{u.lastName}} {{u.firstName}}</td>
+            <td><a class="button is-primary" [routerLink]="['/users', u.id]">edit</a></td>
+            <td><a class="button is-primary" [routerLink]="['/users', u.id, 'items']">Won Items</a></td>
+        </tr>
+    </tbody>
+</table>

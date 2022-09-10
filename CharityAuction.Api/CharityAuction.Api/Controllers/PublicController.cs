@@ -1,4 +1,5 @@
-﻿using CharityAuction.Api.Models;
+﻿using CharityAuction.Api.DTOs;
+using CharityAuction.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CharityAuction.Api.Controllers
@@ -35,6 +36,18 @@ namespace CharityAuction.Api.Controllers
                 return new NotFoundResult();
 
             return File(i.FileBytes, "image/jpeg");
+        }
+
+
+        [HttpGet]
+        [Route("currentitems")]
+        public ActionResult<BiddableItemResponse[]> GetCurrentAuctionItems()
+        {
+            User dummyUser = new User();
+            BiddableItemResponse[] items = db.AuctionItems.Where(x => x.Auction.StartDate <= DateTime.UtcNow && x.Auction.EndDate >= DateTime.UtcNow).ToArray().Select(x => new BiddableItemResponse(x, dummyUser)).ToArray();
+
+            items = items.OrderByDescending(x => x.YouAreLeading).ThenByDescending(x => x.YouAreOutbid).ThenBy(x => x.LotNumber).ToArray();
+            return items;
         }
     }
 }

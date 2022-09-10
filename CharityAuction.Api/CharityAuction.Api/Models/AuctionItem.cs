@@ -88,7 +88,15 @@ namespace CharityAuction.Api.Models
                 if (top == null)
                     return StartPrice;
                 else
-                    return top.BidAmount + 1M;
+                {
+                    if (top.BidAmount < 50)
+                        return top.BidAmount + 1M;
+                    else if (top.BidAmount < 100)
+                        return top.BidAmount + 2M;
+                    else
+                        return top.BidAmount + 5M;
+
+                }
 
             }
         }

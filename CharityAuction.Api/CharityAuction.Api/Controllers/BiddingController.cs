@@ -24,7 +24,7 @@ namespace CharityAuction.Api.Controllers
         [Route("available")]
         public ActionResult<BiddableItemResponse[]> GetBiddableItems()
         {
-            BiddableItemResponse[] items = db.AuctionItems.Where(x => x.Auction.StartDate <= DateTime.Now && x.Auction.EndDate >= DateTime.Now).ToArray().Select(x => new BiddableItemResponse(x, userProvider.User)).ToArray();
+            BiddableItemResponse[] items = db.AuctionItems.Where(x => x.Auction.StartDate <= DateTime.UtcNow && x.Auction.EndDate >= DateTime.UtcNow).ToArray().Select(x => new BiddableItemResponse(x, userProvider.User)).ToArray();
 
             items = items.OrderByDescending(x => x.YouAreLeading).ThenByDescending(x => x.YouAreOutbid).ThenBy(x => x.LotNumber).ToArray();
 
@@ -64,7 +64,7 @@ namespace CharityAuction.Api.Controllers
                 var bid = new AuctionItemBid()
                 {
                     BidAmount = request.Amount,
-                    BidDate = DateTime.Now,
+                    BidDate = DateTime.UtcNow,
                     UserId = userProvider.User.Id
                 };
                 if (item.Bids == null) item.Bids = new List<AuctionItemBid>();

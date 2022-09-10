@@ -20,7 +20,7 @@ namespace CharityAuction.Api.Models
         public virtual int? LogoImageId { get; set; }
 
         [NotMapped]
-        public bool BiddingActive { get => StartDate <= DateTime.Now && EndDate >= DateTime.Now; }
+        public bool BiddingActive { get => StartDate <= DateTime.UtcNow && EndDate >= DateTime.UtcNow; }
 
         [JsonIgnore]
         [AdaptIgnore]

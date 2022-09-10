@@ -1,0 +1,45 @@
+<div class="is-size-1">Items for {{User.bidderNumber}}, {{User.firstName}} {{User.lastName}}</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Lot #</th>
+            <th>Item</th>
+            <th>Sold For</th>
+            <th>Outstanding</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let i of Items">
+            <td>{{i.lotNumber}}</td>
+            <td>{{i.title}}</td>
+            <td>{{i.topBidBidAmount | currency}}</td>
+            <td>
+                <span *ngIf="i.paid == true">$0.00</span>
+                <span *ngIf="i.paid == false">{{i.topBidBidAmount | currency}}</span>
+            </td>
+            <td>
+                <span *ngIf="i.paid == true" style="color: green">
+                    PAID
+                </span>
+                <span *ngIf="i.paid == false" style="color: red">
+                    UNPAID
+                </span>
+            </td>
+            <td>
+                <button *ngIf="i.paid == false" type="button" class="button is-primary" (click)="SetItemPaid(i, true)">MARK AS PAID</button>
+                <button *ngIf="i.paid == true" type="button" class="button is-danger" (click)="SetItemPaid(i, false)">REMOVE PAYMENT</button>
+            </td>
+        </tr>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td style="font-weight: bold">{{TotalToPay | currency}}</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>

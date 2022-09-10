@@ -15,6 +15,10 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule } from '@danielmoncada/angul
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ToastrModule } from 'ngx-toastr';
+import { BigscreenComponent } from './bigscreen/bigscreen.component';
+import { UserslistComponent } from './users/userslist/userslist.component';
+import { EdituserComponent } from './users/edituser/edituser.component';
+import { UseritemsComponent } from './users/useritems/useritems.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +29,10 @@ import { ToastrModule } from 'ngx-toastr';
     AuctionitemslistComponent,
     EditauctionitemComponent,
     HomeComponent,
+    BigscreenComponent,
+    UserslistComponent,
+    EdituserComponent,
+    UseritemsComponent,
   ],
   imports: [
     BrowserModule,

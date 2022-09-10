@@ -40,6 +40,8 @@ namespace CharityAuction.Api.Controllers
         [Route("")]
         public ActionResult<AuctionResponse> AddAuction(EditAuctionRequest request)
         {
+            //request.StartDate = DateTime.SpecifyKind(request.StartDate, DateTimeKind.Local).ToUniversalTime();
+            //request.EndDate = DateTime.SpecifyKind(request.EndDate, DateTimeKind.Local).ToUniversalTime();
             Auction auction = request.Adapt<Auction>();
             db.Auctions.Add(auction);
             db.SaveChanges();
@@ -53,6 +55,8 @@ namespace CharityAuction.Api.Controllers
             var existing = db.Auctions.Find(id);
             if (existing == null)
                 return new NotFoundResult();
+            //request.StartDate = DateTime.SpecifyKind(request.StartDate, DateTimeKind.Local).ToUniversalTime();
+            //request.EndDate = DateTime.SpecifyKind(request.EndDate, DateTimeKind.Local).ToUniversalTime();
             request.Adapt(existing);
             db.SaveChanges();
             return existing.Adapt<AuctionResponse>();

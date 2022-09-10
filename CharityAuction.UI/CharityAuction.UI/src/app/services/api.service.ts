@@ -22,4 +22,7 @@ export class ApiService {
   public PutAsync<T>(url : string, data : any) : Observable<T> {
     return this.httpClient.put<T>(environment.apiUrl + "/" + url, data, { headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.authService.CurrentToken()) });
   }
+  public DeleteAsync<T>(url : string) : Observable<T> {
+    return this.httpClient.delete<T>(environment.apiUrl + "/" + url, { headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.authService.CurrentToken()) });
+  }
 }

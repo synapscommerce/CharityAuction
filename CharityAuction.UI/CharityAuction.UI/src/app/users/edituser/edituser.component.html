@@ -1,0 +1,22 @@
+<div class="is-size-1">User {{User.id}}</div>
+
+<div class="field">
+    <label class="label">First Name</label>
+    <div class="control">
+        <input type="text" class="input" [(ngModel)]="User.firstName">
+    </div>
+</div>
+<div class="field">
+    <label class="label">Last Name</label>
+    <div class="control">
+        <input type="text" class="input" [(ngModel)]="User.firstName">
+    </div>
+</div>
+<div class="field">
+    <label class="label">Bidder #</label>
+    <div class="control">
+        <input type="text" class="input" [(ngModel)]="User.bidderNumber">
+    </div>
+</div>
+
+<button type="button" class="button is-danger" (click)="ClearPin()">Clear PIN</button>

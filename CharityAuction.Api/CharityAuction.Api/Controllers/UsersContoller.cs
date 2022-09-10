@@ -24,7 +24,7 @@ namespace CharityAuction.Api.Controllers
         [Route("users")]
         public ActionResult<User[]> GetUsers()
         {
-            return db.Users.ToArray();
+            return db.Users.OrderBy(x => x.BidderNumber).ToArray();
         }
 
         [HttpGet]
@@ -61,6 +61,18 @@ namespace CharityAuction.Api.Controllers
             return existing;
         }
 
+        [HttpDelete]
+        [Route("users/{id}/pin")]
+        public ActionResult<User> ClearUserPin(int id)
+        {
+            var existing = db.Users.Find(id);
+            if (existing == null)
+                return new NotFoundResult();
+            existing.PinCode = null;
+            db.SaveChanges();
+            return existing;
+        }
+
         [HttpGet]
         [Route("users/{id}/wonitems")]
         public ActionResult<BiddableItemResponse[]> GetUserWonItems(int id)
@@ -69,11 +81,43 @@ namespace CharityAuction.Api.Controllers
             if (user == null)
                 return new NotFoundResult();
 
-
-            var wonItems = db.AuctionItems.Where(x => x.Auction.EndDate < DateTime.Now && x.Bids.OrderByDescending(x => x.BidAmount).FirstOrDefault().UserId == user.Id).ToArray();
-
+            var wonItems = db.AuctionItems.Where(x => x.Auction.EndDate < DateTime.UtcNow && x.Bids.OrderByDescending(x => x.BidAmount).FirstOrDefault().UserId == user.Id).ToArray();
 
             return wonItems.Select(x => new BiddableItemResponse(x, user)).ToArray();
+        }
+
+        [HttpPost]
+        [Route("users/{id}/items/{itemId}/paid")]
+        public ActionResult<BiddableItemResponse> SetUserItemPaid(int id, int itemId)
+        {
+            var user = db.Users.Find(id);
+            if (user == null)
+                return new NotFoundResult();
+            var item = db.AuctionItems.Find(itemId);
+            if(item.TopBid.UserId != user.Id)
+                return new NotFoundResult();
+
+            item.Paid = true;
+            db.SaveChanges();
+            return new BiddableItemResponse(item, user);
+
+        }
+
+        [HttpDelete]
+        [Route("users/{id}/items/{itemId}/paid")]
+        public ActionResult<BiddableItemResponse> RemoceUserItemPaid(int id, int itemId)
+        {
+            var user = db.Users.Find(id);
+            if (user == null)
+                return new NotFoundResult();
+            var item = db.AuctionItems.Find(itemId);
+            if (item.TopBid.UserId != user.Id)
+                return new NotFoundResult();
+
+            item.Paid = false;
+            db.SaveChanges();
+            return new BiddableItemResponse(item, user);
+
         }
     }
 }
