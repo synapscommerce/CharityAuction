@@ -15,6 +15,8 @@ export class BigscreenComponent implements OnInit {
   public ImageBaseUrl : string = environment.apiUrl;
   public Feed : string[] = ['','','','','',''];
   private timer !: Subscription;
+  private timer2 !: Subscription;
+  private MainIndex : number = 1;
 
   constructor(private apiService : ApiService) { }
 
@@ -22,6 +24,8 @@ export class BigscreenComponent implements OnInit {
     this.Refresh();
     const t = interval(3000);
     this.timer = t.subscribe(result => this.Update());
+    const t2 = interval(15000);
+    this.timer2 = t2.subscribe(result => this.Rotate());
   }
 
   public Refresh(){
@@ -30,6 +34,15 @@ export class BigscreenComponent implements OnInit {
       if(result.length > 0)
         this.MainItem = result[0];
     });
+  }
+
+  public Rotate(){
+    if(this.Items.length == 0)
+      return;
+    this.MainIndex += 1;
+    if(this.MainIndex >= this.Items.length)
+      this.MainIndex = 0;
+    this.MainItem = this.Items[this.MainIndex];
   }
 
   public Update(){
